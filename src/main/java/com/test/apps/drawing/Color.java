@@ -1,6 +1,8 @@
 package com.test.apps.drawing;
 
 /**
+ * Color for filling certain pixels on canvas
+ *
  * Created by yinpinghou on 13/8/18.
  */
 public class Color {
@@ -15,6 +17,19 @@ public class Color {
     }
 
     public char getColor() { return c; }
+
+    @Override
+    public int hashCode() {
+        return Character.hashCode(c);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Color) {
+            return c == ((Color) o).getColor();
+        }
+        return false;
+    }
 
     public String toString() {
         return "Color[color=" + c + "]";
