@@ -7,6 +7,6 @@ import com.test.apps.drawing.Canvas;
  */
 public interface Command {
 
-    void draw(Canvas canvas, String... args) throws Exception;
+    Canvas execute(Canvas canvas, String[] args) throws Exception;
 
 }

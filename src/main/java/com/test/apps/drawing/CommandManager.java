@@ -1,6 +1,6 @@
 package com.test.apps.drawing;
 
-import com.test.apps.drawing.commands.Command;
+import com.test.apps.drawing.commands.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +12,11 @@ public class CommandManager {
 
     private static CommandManager commandManager;
     private static Map<String, Command> map;
+    private static Object monitor = new Object();
+
     public static CommandManager getInstance() {
         if (commandManager == null) {
-            synchronized (commandManager) {
+            synchronized (monitor) {
                 if (commandManager == null) {
                     commandManager = new CommandManager();
                     init();
@@ -24,13 +26,21 @@ public class CommandManager {
         return commandManager;
     }
 
-    private static void init() {
-        map = new HashMap<>();
-
+    public Command getCommand(String c) {
+        return map.get(c);
     }
 
-    private CommandManager() {}
+    private static void init() {
+        map = new HashMap<>();
+        map.put("C", new CreateCanvasCommand());
+        map.put("L", new DrawLineCommand());
 
+        map.put("H", new HelpCommand());
+        map.put("Q", new QuitCommand());
+    }
+
+    private CommandManager() {
+    }
 
 
 }

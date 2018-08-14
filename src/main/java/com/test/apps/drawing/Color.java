@@ -34,8 +34,4 @@ public class Color {
     public String toString() {
         return "Color[color=" + c + "]";
     }
-
-    public static final Color HORIZONTAL_BORDER_COLOR = new Color('-');
-    public static final Color VERTICAL_BORDER_COLOR = new Color('|');
-
 }

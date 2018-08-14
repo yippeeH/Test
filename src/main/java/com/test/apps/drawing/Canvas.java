@@ -1,5 +1,12 @@
 package com.test.apps.drawing;
 
+import com.test.apps.drawing.commands.Command;
+import com.test.apps.drawing.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Canvas class for drawing.
  * array is the underlying 2-dimensional Color array
@@ -19,31 +26,40 @@ public class Canvas {
         this.width = width;
         this.height = height;
         paintBorders();
+        paintBlank();
     }
 
     private void paintBorders() {
         for (int i = 0; i < array[0].length; ++i) {
-            array[0][i] = Color.HORIZONTAL_BORDER_COLOR;
-            array[array.length - 1][i] = Color.HORIZONTAL_BORDER_COLOR;
+            array[0][i] = Constants.HORIZONTAL_BORDER_COLOR;
+            array[array.length - 1][i] = Constants.HORIZONTAL_BORDER_COLOR;
         }
 
-        for (int i = 1; i < array.length - 1; ++i) {
-            array[i][0] = Color.VERTICAL_BORDER_COLOR;
-            array[i][array[0].length - 1] = Color.VERTICAL_BORDER_COLOR;
+        for (int j = 1; j < array.length - 1; ++j) {
+            array[j][0] = Constants.VERTICAL_BORDER_COLOR;
+            array[j][array[0].length - 1] = Constants.VERTICAL_BORDER_COLOR;
+        }
+    }
+
+    private void paintBlank() {
+        for (int i = 1; i < array[0].length - 1; ++i) {
+            for (int j = 1; j < array.length - 1; ++j) {
+                array[j][i] = Constants.BLANK_COLOR;
+            }
         }
     }
 
     public boolean paintPixel(int x, int y, Color c) {
-        if (x >= 0 && x < width && y >= 0 && y < height && array[x + 1][y + 1] == null) {
-            array[x + 1][y + 1] = c;
+        if (x > 0 && x <= width && y > 0 && y <= height) {
+            array[y][x] = c;
             return true;
         }
         return false;
     }
 
     public Color getPixel(int x, int y) {
-        if (x >= 0 && x < width && y >= 0 && y < height) {
-            return array[x + 1][y + 1];
+        if (x > 0 && x <= width && y > 0 && y <= height) {
+            return array[y][x];
         }
         return null;
     }
@@ -68,6 +84,18 @@ public class Canvas {
         this.width = width;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Canvas) {
+            Canvas other = (Canvas) o;
+            return other.height == this.height
+                    && other.width == this.width
+                    && Arrays.deepEquals(this.array, other.array);
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Canvas[");
         sb.append("\n");
@@ -81,5 +109,10 @@ public class Canvas {
         return sb.toString();
     }
 
-    public static final Canvas INVALID_CANVAS = new Canvas(0, 0);
+    public static final Canvas NULL_CANVAS = new Canvas(0, 0) {
+        @Override
+        public String toString() {
+            return "NullCanvas";
+        }
+    };
 }
